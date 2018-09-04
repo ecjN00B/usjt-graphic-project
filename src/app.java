@@ -6,24 +6,26 @@ public class app{
 		String workSpace[][] = new String [10][10];
 		int x = 2;
 		int y = 6;
-		int posVet=0;
+		int pos=0;
 		
 		for (int i=0; i<10; i++)
 			for(int j=0; j<10; j++)
 				workSpace[i][j]=" ";
 		
-		drawMatriz(x,y,shape,workSpace,posVet);
+		drawMatriz(x,y,shape,workSpace,pos);
 		
 	}
 		
 	static void printFrame(String m[][])
 	{
+		clearScreen();
 		for (int i=0; i<10; i++) {
 			for(int j=0; j<10; j++) {
 				System.out.print(m[i][j]);
 			}
 			System.out.println();
 		}
+		delay();
 	}
 	
 	static void delay()
@@ -45,23 +47,19 @@ public class app{
 	    } catch (IOException | InterruptedException ex) {}
 	}
 	
-	static void drawMatriz(int x, int y, int shape[],String workSpace[][], int posVet) {
-		if(posVet<shape.length) 
-		switch(shape[posVet]) {
+	static void drawMatriz(int x, int y, int shape[],String workSpace[][], int pos) {
+		if(pos<shape.length) 
+		switch(shape[pos]) {
 			case 0:
 				if((y-1)>=0 && (y-1)<10 && x>=0 && x<10 && workSpace[y-1][x]==" ")
 				{
 					workSpace[y-1][x]="_";
 					
-					clearScreen();
-					
 					printFrame(workSpace);
 					
-					delay();
-					
 					x++;
-					posVet++;
-					drawMatriz(x,y,shape,workSpace,posVet);
+					pos++;
+					drawMatriz(x,y,shape,workSpace,pos);
 					break;
 				}	
 				else if ( (y-1)<0 || (y-1)>=10 || x<0 || x>=10 )
@@ -79,16 +77,12 @@ public class app{
 				{
 					workSpace[y-1][x]="/";
 
-					clearScreen();
-					
 					printFrame(workSpace);
-					
-					delay();
-										
+								
 					x++;
 					y--;
-					posVet++;
-					drawMatriz(x,y,shape,workSpace,posVet);
+					pos++;
+					drawMatriz(x,y,shape,workSpace,pos);
 					break;
 				}	
 				else if ( (y-1)<0 || (y-1)>=10 || x<0 || x>=10 )
@@ -106,30 +100,22 @@ public class app{
 				{
 					workSpace[y-1][x]="|";
 
-					clearScreen();
-					
 					printFrame(workSpace);
-					
-					delay();
 										
 					y--;
-					posVet++;
-					drawMatriz(x,y,shape,workSpace,posVet);
+					pos++;
+					drawMatriz(x,y,shape,workSpace,pos);
 					break;
 				}	
 				else if((y-1)>=0 && (y-1)<10 && (x-1)>=0 && (x-1)<10 && workSpace[y-1][x-1]==" ")
 				{
 					workSpace[y-1][x-1]="|";
 
-					clearScreen();
-					
 					printFrame(workSpace);
-					
-					delay();
 										
 					y--;
-					posVet++;
-					drawMatriz(x,y,shape,workSpace,posVet);
+					pos++;
+					drawMatriz(x,y,shape,workSpace,pos);
 					break;
 				}
 				else if ( (y-1)<0 || (y-1)>=10 || x<0 || (x-1)>=10 )
@@ -147,16 +133,12 @@ public class app{
 				{
 					workSpace[y-1][x-1]="\\";
 
-					clearScreen();
-					
 					printFrame(workSpace);
 					
-					delay();
-										
 					x--;
 					y--;
-					posVet++;
-					drawMatriz(x,y,shape,workSpace,posVet);
+					pos++;
+					drawMatriz(x,y,shape,workSpace,pos);
 					break;
 				}
 				else if ( (y-1)<0 || (y-1)>=10 || (x-1)<0 || (x-1)>=10 )
@@ -174,15 +156,11 @@ public class app{
 				{
 					workSpace[y-1][x-1]="_";
 
-					clearScreen();
-					
 					printFrame(workSpace);
-					
-					delay();
 										
 					x--;
-					posVet++;
-					drawMatriz(x,y,shape,workSpace,posVet);
+					pos++;
+					drawMatriz(x,y,shape,workSpace,pos);
 					break;
 				}
 				else if ( (y-1)<0 || (y-1)>=10 || (x-1)<0 || (x-1)>=10 )
@@ -199,17 +177,13 @@ public class app{
 				if(y>=0 && y<10 && (x-1)>=0 && (x-1)<10 && workSpace[y][x-1]==" ")
 				{
 					workSpace[y][x-1]="/";
-
-					clearScreen();
 					
 					printFrame(workSpace);
-					
-					delay();
 										
 					x--;
 					y++;
-					posVet++;
-					drawMatriz(x,y,shape,workSpace,posVet);
+					pos++;
+					drawMatriz(x,y,shape,workSpace,pos);
 					break;
 				}
 				else if ( y<0 || y>=10 || (x-1)<0 || (x-1)>=10 )
@@ -227,30 +201,22 @@ public class app{
 				{
 					workSpace[y][x-1]="|";
 
-					clearScreen();
-					
 					printFrame(workSpace);
 					
-					delay();
-					
 					y++;
-					posVet++;
-					drawMatriz(x,y,shape,workSpace,posVet);
+					pos++;
+					drawMatriz(x,y,shape,workSpace,pos);
 					break;
 				}	
 				else if(y>=0 && y<10 && x>=0 && x<10 && workSpace[y][x]==" ")
 				{
 					workSpace[y][x]="|";
-
-					clearScreen();
 					
 					printFrame(workSpace);
 					
-					delay();
-					
 					y++;
-					posVet++;
-					drawMatriz(x,y,shape,workSpace,posVet);
+					pos++;
+					drawMatriz(x,y,shape,workSpace,pos);
 					break;
 				}
 				else if ( y<0 || y>=10 || x<0 || (x-1)>=10 )
@@ -268,16 +234,12 @@ public class app{
 				{
 					workSpace[y][x]="\\";
 
-					clearScreen();
-					
 					printFrame(workSpace);
-					
-					delay();
 					
 					x++;
 					y++;
-					posVet++;
-					drawMatriz(x,y,shape,workSpace,posVet);
+					pos++;
+					drawMatriz(x,y,shape,workSpace,pos);
 					break;
 				}
 				else if ( y<0 || y>=10 || x<0 || x>=10 )
