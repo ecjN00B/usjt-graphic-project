@@ -16,8 +16,7 @@ public class app{
 		
 	}
 		
-	static void printFrame(String m[][])
-	{
+	static void printFrame(String m[][]){
 		clearScreen();
 		for (int i=0; i<10; i++) {
 			for(int j=0; j<10; j++) {
@@ -25,13 +24,12 @@ public class app{
 			}
 			System.out.println();
 		}
-		delay();
+		delay(150);
 	}
 	
-	static void delay()
-	{
+	static void delay(int ms)	{
 		try {
-			Thread.sleep(100);
+			Thread.sleep(ms);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
