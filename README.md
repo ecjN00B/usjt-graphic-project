@@ -2,6 +2,11 @@
 
 This is a graphic software developed in a project of the University of São Judas Tadeu, whose objective is to draw figures from geometric shapes, save them and have the possibility to load an existing project.
 
+The initial phase was based on the Freeman chain code of eight directions. 
+<p align="center">
+  <img width="275" height="275" src="docs/images/freeman.jpeg">
+</p>
+
 ## Getting Started
 
 ### Prerequisites
