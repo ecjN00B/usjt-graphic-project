@@ -7,6 +7,12 @@ The initial phase was based on the Freeman chain code of eight directions.
   <img width="275" height="275" src="docs/images/freeman.jpeg">
 </p>
 
+The decision-making of the algorithm is based on the following Cartesian plane system
+
+<p align="center">
+  <img width="275" height="275" src="docs/images/cartesian_coordinate_system.jpg">
+</p>
+
 ## Getting Started
 
 ### Prerequisites
