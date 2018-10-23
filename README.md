@@ -2,6 +2,19 @@
 
 This is a graphic software developed in a project of the University of São Judas Tadeu, whose objective is to draw figures from geometric shapes, save them and have the possibility to load an existing project.
 
+The initial phase was based on the Freeman chain code of eight directions. 
+<p align="center">
+  <img width="275" height="275" src="docs/images/freeman.jpeg">
+</p>
+
+The decision-making of the algorithm is based on the following Cartesian plane system
+
+<p align="center">
+  <img width="275" height="275" src="docs/images/cartesian_coordinate_system.jpg">
+</p>
+
+The second phase was based on a book¹ and had the initial code provided by Professor Carlos Menezes.
+
 ## Getting Started
 
 ### Prerequisites
@@ -30,3 +43,7 @@ See also the list of [contributors](https://github.com/ecjN00B/usjt-graphic-proj
 ## License
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE.md](LICENSE.md) file for details
+
+## References
+
+[1] KOFFMAN, ELLIOT B. Objetos, Abstração, Estruturas de Dados e Projeto usando JAVA 5.0, 1. Ed.,São Paulo: LTC, 2008.
