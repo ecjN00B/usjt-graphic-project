@@ -4,7 +4,7 @@ import java.awt.Point;
 public class Figura {
 	private Point ponto_inicial;
 	private int passo;
-	private int coordenadas[];
+	private int codigo[];
 	private Color cor;
 	
 	public Figura() {
@@ -26,25 +26,27 @@ public class Figura {
 	public void setPasso(int passo) {
 		this.passo = passo;
 	}
-
-	public int[] getCoordenadas() {
-		return coordenadas;
+	
+	
+	public int[] getCodigo() {
+		return codigo;
 	}
-	public void setCoordenadas(int coordenadas[]) {
-		this.coordenadas=coordenadas;
+	
+	public void setCodigo(int codigo[]) {
+		this.codigo=codigo;
 	}
-
-	public void addCoordenadas(int cords[]) {
+	
+	public void addCodigo(int codigos[]) {
 		
-		if(coordenadas == null)
-			coordenadas = cords;
+		if(codigo == null)
+			codigo = codigos;
 		else {
-			int finalcords[] = new int[coordenadas.length+cords.length];
-			for(int i = 0 ; i<coordenadas.length; i++)
-				finalcords[i] = coordenadas[i];
-			for(int i = 0; i<cords.length; i++)
-				finalcords[coordenadas.length+i] = cords[i];
-			coordenadas = finalcords;
+			int finalcods[] = new int[codigo.length+codigos.length];
+			for(int i = 0 ; i<codigo.length; i++)
+				finalcods[i] = codigo[i];
+			for(int i = 0; i<codigos.length; i++)
+				finalcods[codigo.length+i] = codigos[i];
+			codigo = finalcods;
 		}
 	}
 
@@ -55,4 +57,5 @@ public class Figura {
 	public void setCor(Color cor) {
 		this.cor = cor;
 	}
+
 }

@@ -12,13 +12,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.Line2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -30,7 +27,7 @@ public class PainelDesenho extends JPanel
 	private Figura aux_figura = new Figura();
 	private Point aux_ponto = new Point();
 	private Point aux_ponto2 = new Point();
-	private int aux_cord;
+	private int aux_cod;
 	private int tipo_desenho = Desenho.DEFAULT;
 	private JPanel aux_painel = new JPanel();
 	private JLabel aux_label = new JLabel();
@@ -50,20 +47,22 @@ public class PainelDesenho extends JPanel
 		aux_painel.add(aux_texto);
 		aux_texto.addActionListener(this);
 		
+		
 	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D gg = (Graphics2D) g.create();
-		//gg.setStroke(new BasicStroke(5f));
+		Graphics2D gg = (Graphics2D) g;
+		gg.setStroke(new BasicStroke(2f));
+		
 		
 		for(Figura figura:principal) 
 			doDesenho(figura,gg);
 		
 		if(aux_figura.getPasso()>0) 
 			doDesenho(aux_figura,gg);
-
+		
 	}
 	
 	public void doDesenho(Figura figura, Graphics2D gg) {
@@ -71,78 +70,82 @@ public class PainelDesenho extends JPanel
 		gg.setColor(figura.getCor());
 		int passo = figura.getPasso();
 		Point ponto = figura.getPonto().getLocation();
-		int coordenadas[] = figura.getCoordenadas();
-		Point[] desenho;
-		if(coordenadas!=null) {
-			desenho = new Point[coordenadas.length+1];
-			desenho[0] = ponto.getLocation();
+		int codigos[] = figura.getCodigo();
+		Point[] coordenadas;
+		if(codigos!=null) {
+			coordenadas = new Point[codigos.length+1];
+			coordenadas[0] = ponto.getLocation();
 			
-			for(int i = 0; i<coordenadas.length;i++) {
-				switch(coordenadas[i]) {
+			for(int i = 0; i<codigos.length;i++) {
+				switch(codigos[i]) {
 				case 0:
 					ponto.setLocation(ponto.x+passo,ponto.y);
-					desenho[i+1] = ponto.getLocation();
+					coordenadas[i+1] = ponto.getLocation();
 					break;
 				case 1:
 					ponto.setLocation(ponto.x+passo,
 							ponto.y-passo);
-					desenho[i+1] = ponto.getLocation();
+					coordenadas[i+1] = ponto.getLocation();
 					break;
 				case 2:
 					ponto.setLocation(ponto.x, ponto.y-passo);
-					desenho[i+1] = ponto.getLocation();
+					coordenadas[i+1] = ponto.getLocation();
 					break;
 				case 3:
 					ponto.setLocation(ponto.x-passo,
 							ponto.y-passo);
-					desenho[i+1] = ponto.getLocation();
+					coordenadas[i+1] = ponto.getLocation();
 					break;
 				case 4: 
 					ponto.setLocation(ponto.x- passo, ponto.y);
-					desenho[i+1] = ponto.getLocation();
+					coordenadas[i+1] = ponto.getLocation();
 					break;
 				case 5:
 					ponto.setLocation(ponto.x-passo, 
 							ponto.y+passo);
-					desenho[i+1] = ponto.getLocation();
+					coordenadas[i+1] = ponto.getLocation();
 					break;
 				case 6:
 					ponto.setLocation(ponto.x, ponto.y+passo);
-					desenho[i+1] = ponto.getLocation();
+					coordenadas[i+1] = ponto.getLocation();
 					break;
 				case 7:
 					ponto.setLocation(ponto.x+passo, 
 							ponto.y+passo);
-					desenho[i+1] = ponto.getLocation();
+					coordenadas[i+1] = ponto.getLocation();
 					break;
 				}
 				
 				
-				gg.draw(new Line2D.Double(desenho[i].x,desenho[i].y,
-							desenho[i+1].x,desenho[i+1].y));
+				gg.drawLine(coordenadas[i].x,coordenadas[i].y,
+						coordenadas[i+1].x,coordenadas[i+1].y);
 				
 			}
 		}
 		else {
-			desenho = new Point[1];
-			desenho[0] = figura.getPonto();
+			coordenadas = new Point[1];
+			coordenadas[0] = figura.getPonto();
 		}
 				
 		if(figura.equals(aux_figura) ) {
 			if(tipo_desenho==Desenho.FREEMAN && mousemoved) {
-				if(aux_figura.getCoordenadas()!=null)
-					aux_ponto = desenho[aux_figura.getCoordenadas().length].getLocation();
+				if(aux_figura.getCodigo()!=null)
+					aux_ponto = coordenadas[aux_figura.getCodigo().length].getLocation();
 				else
 					aux_ponto = aux_figura.getPonto().getLocation();
 				
-				gg.draw(new Line2D.Double(aux_ponto.x,
+				gg.drawLine(aux_ponto.x,
 						aux_ponto.y,
-						aux_ponto2.x,aux_ponto2.y));
+						aux_ponto2.x,aux_ponto2.y);
 				mousemoved = false;
 				aux_ponto2.setLocation(aux_ponto);
 			}
-			else if(tipo_desenho==Desenho.LIVRE)
-				aux_ponto = desenho[aux_figura.getCoordenadas().length].getLocation();
+			else if(tipo_desenho==Desenho.LIVRE) {
+				if(aux_figura.getCodigo()!=null)
+					aux_ponto = coordenadas[aux_figura.getCodigo().length].getLocation();
+				else
+					aux_ponto = aux_figura.getPonto().getLocation();
+			}
 		}
 		
 	}
@@ -165,7 +168,7 @@ public class PainelDesenho extends JPanel
 		removePainelAuxiliar();
 		if(aux_figura.getPonto()!=null)
 			lixeira.clear();
-		if(aux_figura.getCoordenadas()!=null && aux_figura.getPonto()!=null && aux_figura.getPasso()!=0)
+		if(aux_figura.getCodigo()!=null && aux_figura.getPonto()!=null && aux_figura.getPasso()!=0)
 			principal.add(aux_figura);
 		this.aux_figura = new Figura();				
 	}
@@ -173,6 +176,7 @@ public class PainelDesenho extends JPanel
 	public void setTipoDesenho(int tipo) {
 		aux_figura = new Figura();
 		this.tipo_desenho = tipo;
+		removePainelAuxiliar();
 		repaint();
 	}
 	
@@ -180,9 +184,11 @@ public class PainelDesenho extends JPanel
 		if(aux_figura.getPonto()!=null) {
 			aux_figura = new Figura();
 			lixeira.clear();
-		}else if(principal.size()>0) {
+		}
+		if(principal.size()>0) {
 				lixeira.add(principal.get(principal.size()-1));
 				principal.remove(principal.size()-1);
+				limpar=false;
 			}
 		else if(lixeira.size()>0 && limpar) {
 				for(int i = 0; i<lixeira.size(); i++)
@@ -197,7 +203,8 @@ public class PainelDesenho extends JPanel
 		if(aux_figura.getPonto()!=null) {
 			aux_figura = new Figura();
 			lixeira.clear();
-		}else if(lixeira.size()>0 && !limpar) {
+		}
+		if(lixeira.size()>0 && !limpar) {
 			principal.add(lixeira.get(lixeira.size()-1));
 			lixeira.remove(lixeira.size()-1);
 			limpar = false;
@@ -222,30 +229,161 @@ public class PainelDesenho extends JPanel
 			int y = e.getY() - aux_ponto.y;
 			int x = e.getX() - aux_ponto.x ;
 
-			if(x<0) {
-				if(y>0)
-					aux_cord=5;
-				else if(y<0) 
-					aux_cord=3;
-				else 
-					aux_cord=4;
+			int codigos[];
+			int cont,resto;
+			int yd = Math.abs(y);
+			int xd = Math.abs(x);
+			int flag = 1;	
+			
+			if(xd>yd) {
+				codigos = new int[xd];
+				if(yd!=0) {
+					cont = xd/yd;
+					resto = xd%yd;
+				}
+				else {
+					cont = xd+1;
+					resto=0;
+				}
+			}else {
+				codigos = new int[yd];
+				if(xd!=0) {
+					cont = yd/xd;
+					resto = yd%xd;
+				}
+				else {
+					cont = yd+1;
+					resto=0;
+				}
 			}
-			else if(x>0) {
-				if(y>0)
-					aux_cord=7;
-				else if(y<0) 
-					aux_cord=1;
-				else 
-					aux_cord=0;
+			
+			if(x>=0) {
+				if(y<0) {
+					if(xd>yd) {
+						for(int i = 0; i<codigos.length; i++) {
+							if(flag==cont) {
+								codigos[i] = 1;
+								flag = 1;
+								if(resto>0) {
+									codigos[++i]=0;
+									resto--;
+								}
+							}else {
+								codigos[i] = 0;
+								flag++;
+							}
+						}
+					}else {
+						for(int i = 0; i<codigos.length; i++) {
+							if(flag==cont) {
+								codigos[i] = 1;
+								flag = 1;
+								if(resto>0) {
+									codigos[++i]=2;
+									resto--;
+								}
+							}else {
+								codigos[i] = 2;
+								flag++;
+							}
+						}
+					}
+				}else {
+					if(xd>yd) {
+						for(int i = 0; i<codigos.length; i++) {
+							if(flag==cont) {
+								codigos[i] = 7;
+								flag = 1;
+								if(resto>0) {
+									codigos[++i]=0;
+									resto--;
+								}
+							}else {
+								codigos[i] = 0;
+								flag++;
+							}
+						}
+					}else {
+						for(int i = 0; i<codigos.length; i++) {
+							if(flag==cont) {
+								codigos[i] = 7;
+								flag = 1;
+								if(resto>0) {
+									codigos[++i]=6;
+									resto--;
+								}
+							}else {
+								codigos[i] = 6;
+								flag++;
+							}
+						}
+					}
+				}
+			}else {
+				if(y<0) {
+					if(xd>yd) {
+						for(int i = 0; i<codigos.length; i++) {
+							if(flag==cont) {
+								codigos[i] = 3;
+								flag = 1;
+								if(resto>0) {
+									codigos[++i]=4;
+									resto--;
+								}
+							}else {
+								codigos[i] = 4;
+								flag++;
+							}
+						}
+					}else {
+						for(int i = 0; i<codigos.length; i++) {
+							if(flag==cont) {
+								codigos[i] = 3;
+								flag = 1;
+								if(resto>0) {
+									codigos[++i]=2;
+									resto--;
+								}
+							}else {
+								codigos[i] = 2;
+								flag++;
+							}
+						}
+					}
+				}else {
+					if(xd>yd) {
+						for(int i = 0; i<codigos.length; i++) {
+							if(flag==cont) {
+								codigos[i] = 5;
+								flag = 1;
+								if(resto>0) {
+									codigos[++i]=4;
+									resto--;
+								}
+							}else {
+								codigos[i] = 4;
+								flag++;
+							}
+						}
+					}else {
+						for(int i = 0; i<codigos.length; i++) {
+							if(flag==cont) {
+								codigos[i] = 5;
+								flag = 1;
+								if(resto>0) {
+									codigos[++i]=6;
+									resto--;
+								}
+							}else {
+								codigos[i] = 6;
+								flag++;
+							}
+						}
+					}
+				}
 			}
-			else {
-				if(y>0)
-					aux_cord=6;
-				else if(y<0) 
-					aux_cord=2;
-			}
-			int cord[] = {aux_cord};
-			aux_figura.addCoordenadas(cord);
+			aux_figura.addCodigo(codigos);
+
 			repaint();
 		}
 		
@@ -269,22 +407,22 @@ public class PainelDesenho extends JPanel
 			}
 			if(y1<y2) {
 				if(x1<x2) {
-					int cord[] = {0,6,4,2};
-					aux_figura.setCoordenadas(cord);
+					int codigos[] = {0,6,4,2};
+					aux_figura.setCodigo(codigos);
 				}
 				else {
-					int cord[] = {4,6,0,2};
-					aux_figura.setCoordenadas(cord);
+					int codigos[] = {4,6,0,2};
+					aux_figura.setCodigo(codigos);
 				}
 			}
 			else {
 				if(x1<x2) {
-					int cord[] = {0,2,4,6};
-					aux_figura.setCoordenadas(cord);
+					int codigos[] = {0,2,4,6};
+					aux_figura.setCodigo(codigos);
 				}
 				else {
-					int cord[] = {2,4,6,0};
-					aux_figura.setCoordenadas(cord);
+					int codigos[] = {2,4,6,0};
+					aux_figura.setCodigo(codigos);
 				}
 			}
 			
@@ -298,39 +436,39 @@ public class PainelDesenho extends JPanel
 			if(x<(-p/2)) {
 				if(y>p/2) {
 					aux_ponto2.setLocation(aux_ponto.x-p, aux_ponto.y+p);
-					aux_cord=5;
+					aux_cod=5;
 				}
 				else if(y<(-p/2)) {
 					aux_ponto2.setLocation(aux_ponto.x-p, aux_ponto.y-p);
-					aux_cord=3;
+					aux_cod=3;
 				}
 				else {
 					aux_ponto2.setLocation(aux_ponto.x-p, aux_ponto.y);
-					aux_cord=4;
+					aux_cod=4;
 				}
 			}
 			else if(x>p/2) {
 				if(y>p/2) {
 					aux_ponto2.setLocation(aux_ponto.x+p, aux_ponto.y+p);
-					aux_cord=7;
+					aux_cod=7;
 				}
 				else if(y<(-p/2)) {
 					aux_ponto2.setLocation(aux_ponto.x+p, aux_ponto.y-p);
-					aux_cord=1;
+					aux_cod=1;
 				}
 				else {
 					aux_ponto2.setLocation(aux_ponto.x+p, aux_ponto.y);
-					aux_cord=0;
+					aux_cod=0;
 				}
 			}
 			else {
 				if(y>p/2) {
 					aux_ponto2.setLocation(aux_ponto.x, aux_ponto.y+p);
-					aux_cord=6;
+					aux_cod=6;
 				}
 				else if(y<(-p/2)) {
 					aux_ponto2.setLocation(aux_ponto.x, aux_ponto.y-p);
-					aux_cord=2;
+					aux_cod=2;
 				}
 			}
 			mousemoved = true;
@@ -350,19 +488,19 @@ public class PainelDesenho extends JPanel
 				aux_figura.setPasso(xd/2);
 				if(y2>y1) {
 					if(x2>x1) {
-						int cord[] = {0,0,5,3};
-						aux_figura.setCoordenadas(cord);
+						int codigos[] = {0,0,5,3};
+						aux_figura.setCodigo(codigos);
 					}else {
-						int cord[] = {4,4,7,1};
-						aux_figura.setCoordenadas(cord);
+						int codigos[] = {4,4,7,1};
+						aux_figura.setCodigo(codigos);
 					}
 				}else {
 					if(x2>x1) {
-						int cord[] = {0,0,3,5};
-						aux_figura.setCoordenadas(cord);
+						int codigos[] = {0,0,3,5};
+						aux_figura.setCodigo(codigos);
 					}else {
-						int cord[] = {4,4,1,7};
-						aux_figura.setCoordenadas(cord);
+						int codigos[] = {4,4,1,7};
+						aux_figura.setCodigo(codigos);
 					}
 				}
 				
@@ -371,19 +509,19 @@ public class PainelDesenho extends JPanel
 				aux_figura.setPasso(yd/2);
 				if(y2>y1) {
 					if(x2>x1) {
-						int cord[] = {6,6,1,3};
-						aux_figura.setCoordenadas(cord);
+						int codigos[] = {6,6,1,3};
+						aux_figura.setCodigo(codigos);
 					}else {
-						int cord[] = {6,6,3,1};
-						aux_figura.setCoordenadas(cord);
+						int codigos[] = {6,6,3,1};
+						aux_figura.setCodigo(codigos);
 					}
 				}else {
 					if(x2>x1) {
-						int cord[] = {2,2,7,5};
-						aux_figura.setCoordenadas(cord);
+						int codigos[] = {2,2,7,5};
+						aux_figura.setCodigo(codigos);
 					}else {
-						int cord[] = {2,2,5,7};
-						aux_figura.setCoordenadas(cord);
+						int codigos[] = {2,2,5,7};
+						aux_figura.setCodigo(codigos);
 					}
 				}
 			}else {
@@ -395,37 +533,37 @@ public class PainelDesenho extends JPanel
 				if((x*y)>0) {
 					if(x>0) {
 						if(y<x) {
-							int cord[] = {0,6,3};
-							aux_figura.setCoordenadas(cord);
+							int codigos[] = {0,6,3};
+							aux_figura.setCodigo(codigos);
 						}else {
-							int cord[] = {6,0,3};
-							aux_figura.setCoordenadas(cord);
+							int codigos[] = {6,0,3};
+							aux_figura.setCodigo(codigos);
 						}
 					}else {
 						if(x<y) {
-							int cord[] = {4,2,7};
-							aux_figura.setCoordenadas(cord);
+							int codigos[] = {4,2,7};
+							aux_figura.setCodigo(codigos);
 						}else {
-							int cord[] = {2,4,7};
-							aux_figura.setCoordenadas(cord);
+							int codigos[] = {2,4,7};
+							aux_figura.setCodigo(codigos);
 						}
 					}
 				}else {
 					if(x>0) {
 						if(x>(Math.abs(y))) {
-							int cord[] = {0,2,5};
-							aux_figura.setCoordenadas(cord);
+							int codigos[] = {0,2,5};
+							aux_figura.setCodigo(codigos);
 						}else {
-							int cord[] = {2,0,5};
-							aux_figura.setCoordenadas(cord);
+							int codigos[] = {2,0,5};
+							aux_figura.setCodigo(codigos);
 						}
 					}else {
 						if(y>(Math.abs(x))) {
-							int cord[] = {6,4,1};
-							aux_figura.setCoordenadas(cord);
+							int codigos[] = {6,4,1};
+							aux_figura.setCodigo(codigos);
 						}else {
-							int cord[] = {4,6,1};
-							aux_figura.setCoordenadas(cord);
+							int codigos[] = {4,6,1};
+							aux_figura.setCodigo(codigos);
 						}
 					}
 				}
@@ -454,8 +592,8 @@ public class PainelDesenho extends JPanel
 				addPainelAuxiliar();
 			}
 			else if(aux_figura.getPasso()>0) {
-				int cord[] = {aux_cord};
-				aux_figura.addCoordenadas(cord);
+				int codigo[] = {aux_cod};
+				aux_figura.addCodigo(codigo);
 				repaint();
 			}	
 		}
@@ -479,20 +617,16 @@ public class PainelDesenho extends JPanel
 	}
 	
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent e) {}
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if(tipo_desenho == Desenho.LIVRE && aux_figura.getPonto()==null) {
 			aux_figura.setPonto(e.getPoint());
 			aux_figura.setPasso(1);
+			repaint();
 		}
 		
 	}
@@ -531,7 +665,7 @@ public class PainelDesenho extends JPanel
 				s = s.replace(" " , "");
 				s = s.replace(",","");
 				
-				int aux[] = new int[s.length()];
+				int codigos[] = new int[s.length()];
 				
 				try {
 					for(int i = 0 ; i<s.length(); i++) {
@@ -539,13 +673,13 @@ public class PainelDesenho extends JPanel
 						if(x<0 || x>7)
 							throw new NumberFormatException();
 						else
-							aux[i] = x;
+							codigos[i] = x;
 					}			
 					
 					requestFocus();
 					aux_texto.setText("");	
 					
-					aux_figura.addCoordenadas(aux);
+					aux_figura.addCodigo(codigos);
 					repaint();
 					
 				}catch(NumberFormatException e2) {
@@ -579,8 +713,8 @@ public class PainelDesenho extends JPanel
 				int aux = Integer.parseInt(""+e.getKeyChar());
 				if(aux<0 || aux>7)
 					throw new NumberFormatException();
-				int cord[] = {aux};
-				aux_figura.addCoordenadas(cord);
+				int codigo[] = {aux};
+				aux_figura.addCodigo(codigo);
 				mousemoved = false;
 				repaint();
 			}catch(NumberFormatException e1) {}
@@ -589,15 +723,15 @@ public class PainelDesenho extends JPanel
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+		if (tipo_desenho==Desenho.FREEMAN && e.getKeyCode() == KeyEvent.VK_ENTER) {
+			if(aux_figura.getPonto()!=null && aux_figura.getPasso()>0)
+				newFigura();
+		}
 		
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void keyReleased(KeyEvent e) {}
 	
 
 	public static void main(String[] args) {
@@ -606,7 +740,7 @@ public class PainelDesenho extends JPanel
 		PainelBotoes botao = new PainelBotoes(painel);
 		tela.add(painel);
 		tela.add(botao,BorderLayout.NORTH);
-		tela.setSize(800,800);
+		tela.setSize(400,400);
 		tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		tela.setVisible(true);
 		
