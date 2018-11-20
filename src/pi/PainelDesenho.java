@@ -1,3 +1,5 @@
+package pi;
+
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -745,6 +747,4 @@ public class PainelDesenho extends JPanel
 		tela.setVisible(true);
 		
 	}
-
-	
 }

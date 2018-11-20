@@ -1,5 +1,8 @@
+package pi;
+
 import java.awt.Color;
 import java.awt.Point;
+
 
 public class Figura {
 	private Point ponto_inicial;
