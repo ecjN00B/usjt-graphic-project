@@ -4,6 +4,21 @@
     <script src="./js/documentup.min.js"></script>
     <script>
       DocumentUp.document("ecjN00B/usjt-graphic-project");
+	  
+	  function replaceSrc(){
+
+        var images = document.getElementsByTagName('img');
+
+        for(var i = 0; i < images.length; i++)
+        {
+            var img = images[i];
+
+            img.src.replace('cdn.rawgit', 'raw.githubusercontent');
+        }
+    }
+
+    window.onload = replaceSrc;
+	
     </script>
   </head>
   <body></body>
