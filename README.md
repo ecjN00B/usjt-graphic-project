@@ -2,6 +2,8 @@
 
 This is a graphic software developed in a project of the University of São Judas Tadeu, whose objective is to draw figures from geometric shapes, save them and have the possibility to load an existing project.
 
+## First Phase
+
 The initial phase was based on the Freeman chain code of eight directions. 
 <p align="center">
   <img width="275" height="275" src="docs/images/freeman.jpeg">
@@ -13,7 +15,23 @@ The decision-making of the algorithm is based on the following Cartesian plane s
   <img width="275" height="275" src="docs/images/cartesian_coordinate_system.jpg">
 </p>
 
+## Second Phase
+
 The second phase was based on a book¹ and had the initial code provided by Professor Carlos Menezes.
+
+## Third Phase
+
+Studying the contents of the book¹ was made a new interface with several functionalities, being carried out a complete refactoring of the code. See some code screens:
+
+### Main Page
+<p align="center">
+  <img width="350" height="275" src="docs/images/main.PNG">
+</p>
+
+### Import an image
+<p align="center">
+  <img width="350" height="275" src="docs/images/import.PNG">
+</p>
 
 ## Getting Started
 
