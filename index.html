@@ -3,7 +3,12 @@
   <head>
     <script src="./js/documentup.min.js"></script>
     <script>
-      DocumentUp.document("ecjN00B/usjt-graphic-project");
+	  async() => {
+	  
+		await DocumentUp.document("ecjN00B/usjt-graphic-project");
+		window.onload = replaceSrc;
+	  
+	  }
 	  
 	  function replaceSrc(){
 
@@ -16,8 +21,6 @@
             img.src = img.src.replace('cdn.rawgit', 'raw.githubusercontent');
         }
     }
-
-    window.onload = replaceSrc;
 	
     </script>
   </head>
