@@ -3,7 +3,7 @@
   <head>
     <script src="./js/documentup.min.js"></script>
     <script>
-	  async() => {
+	  async function start(){
 	  
 		await DocumentUp.document("ecjN00B/usjt-graphic-project");
 		window.onload = replaceSrc;
@@ -20,7 +20,9 @@
 
             img.src = img.src.replace('cdn.rawgit', 'raw.githubusercontent');
         }
-    }
+	  }
+	  
+	  start();
 	
     </script>
   </head>
