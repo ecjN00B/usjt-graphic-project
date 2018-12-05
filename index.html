@@ -4,9 +4,7 @@
     <script src="./js/documentup.min.js"></script>
     <script>
 	  
-	  DocumentUp.document("ecjN00B/usjt-graphic-project");
-	  
-	  function afterRender(){
+	  DocumentUp.document("ecjN00B/usjt-graphic-project", afterRender: function(){
 
         var images = document.getElementsByTagName('img');
 
@@ -16,7 +14,7 @@
 
             img.src = img.src.replace('cdn.rawgit', 'raw.githubusercontent');
         }
-	  }
+	  });
 	
     </script>
   </head>
