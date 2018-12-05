@@ -4,16 +4,17 @@
     <script src="./js/documentup.min.js"></script>
     <script>
 	  
-	  DocumentUp.document("ecjN00B/usjt-graphic-project", afterRender: function(){
+	  DocumentUp.document({repo: "ecjN00B/usjt-graphic-project", afterRender: function(){
 
-        var images = document.getElementsByTagName('img');
+			var images = document.getElementsByTagName('img');
 
-        for(var i = 0; i < images.length; i++)
-        {
-            var img = images[i];
+			for(var i = 0; i < images.length; i++)
+			{
+				var img = images[i];
 
-            img.src = img.src.replace('cdn.rawgit', 'raw.githubusercontent');
-        }
+				img.src = img.src.replace('cdn.rawgit', 'raw.githubusercontent');
+			}
+		  }
 	  });
 	
     </script>
