@@ -1,3 +1,0 @@
-InterfaceGrafica$2
-InterfaceGrafica
-InterfaceGrafica$1
